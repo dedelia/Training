@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Application {
 
 	public static void main(String[] args) throws Exception {
+
 		//finally synched with git ->let's test
 		SpringApplication.run(Application.class, args);
 	}
