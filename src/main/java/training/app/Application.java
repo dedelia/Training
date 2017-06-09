@@ -8,13 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = { "training" })
-// @PropertySource("classpath:application.properties")
+
 public class Application {
 
 	public static void main(String[] args) throws Exception {
-
+		//finally synched with git ->let's test
 		SpringApplication.run(Application.class, args);
 	}
 
 }
-
