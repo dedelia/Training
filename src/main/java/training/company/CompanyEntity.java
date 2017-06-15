@@ -28,8 +28,8 @@ public class CompanyEntity extends ExternalUUIDEntity {
 	@Column(name = "NAME")
 	private String name;
 
-	/*@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
-	private Set<UserEntity>	userSet;*/
+/*	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
+	private Set<UserEntity> userSet;*/
 
 	public Long getId() {
 		return id;
@@ -47,14 +47,11 @@ public class CompanyEntity extends ExternalUUIDEntity {
 		this.name = name;
 	}
 
-/*	public Set<UserEntity> getUserSet() {
-		return userSet;
-	}
-
-	public void setUserSet(Set<UserEntity> userSet) {
-		this.userSet = userSet;
-	}
-*/
-
+	/*
+	 * public Set<UserEntity> getUserSet() { return userSet; }
+	 *
+	 * public void setUserSet(Set<UserEntity> userSet) { this.userSet = userSet;
+	 * }
+	 */
 
 }

@@ -26,7 +26,7 @@ public class UserEntity extends ExternalUUIDEntity {
 	@Column(name = "USERNAME")
 	private String username;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "COMPANYFK", referencedColumnName = "ID")
 	public CompanyEntity company;
 
