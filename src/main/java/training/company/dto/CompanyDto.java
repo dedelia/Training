@@ -1,11 +1,14 @@
 package training.company.dto;
 
+import java.util.UUID;
+
 import training.company.CompanyEntity;
 
 public class CompanyDto {
 
 	private Long id;
 	private String name;
+	private UUID UUID;
 
 	public CompanyDto() {
 	}
@@ -13,6 +16,7 @@ public class CompanyDto {
 	public CompanyDto(CompanyEntity company){
 		this.id = company.getId();
 		this.name = company.getName();
+		this.UUID=company.getExternalUUID();
 	}
 
 	public Long getId() {
@@ -30,6 +34,15 @@ public class CompanyDto {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public UUID getUUID() {
+		return UUID;
+	}
+
+	public void setUUID(UUID UUID) {
+		UUID = UUID;
+	}
+
 
 
 }

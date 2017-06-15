@@ -3,21 +3,14 @@ package training.company.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import training.common.annotation.TransactionalService;
 import training.company.CompanyEntity;
-import training.company.api.rest.CompanyResource;
 import training.company.dto.CompanyDto;
 import training.company.repository.CompanyRepository;
-import training.user.UserEntity;
-import training.user.dto.UserDto;
-import training.user.repository.UserRepository;
 
-@Service
-@Transactional
+@TransactionalService
 public class CompanyService {
 
 	@Autowired
@@ -40,8 +33,12 @@ public class CompanyService {
 	}
 
 	public CompanyDto getCompany(Long id) {
-		// TODO Auto-generated method stub
-		return new CompanyDto(companyRepository.findById(id));
+		CompanyDto company = null;
+		if (companyRepository.findById(id) != null) {
+			company = new CompanyDto(companyRepository.findById(id));
+		}
+
+		return company;
 	}
 
 }

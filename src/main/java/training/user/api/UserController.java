@@ -1,4 +1,4 @@
-package training.user.api;
+/*package training.user.api;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class UserController {
 		return userService.getAll();
 	}
 
-/*	@RequestMapping(value = "/users", method = RequestMethod.POST)
+	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	@ResponseBody
 	public void addUser(@RequestBody UserDto user) {
 		userService.addUser(user);
@@ -39,7 +39,7 @@ public class UserController {
 		// obj-> should not update
 		userService.updateUser(user);
 
-	}*/
+	}
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	public void deleteUser(@PathVariable Long id) {
@@ -51,6 +51,7 @@ public class UserController {
 		//List<UserDto> userSet = userService.getUserSet();
 
 		//using method from general baseRespo adapted in service
-		return userService.getUserById(username);
+		return userService.getUserByName(username);
 	}
 }
+*/

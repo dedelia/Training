@@ -1,4 +1,4 @@
-package training.common;
+package training.common.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Service
-public @interface RestSubResource {
-    public Class<?> parent();
+public @interface RestResource {
+	 String value() default "";
 }
-
