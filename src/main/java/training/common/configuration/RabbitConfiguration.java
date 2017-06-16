@@ -1,14 +1,12 @@
 package training.common.configuration;
 
 import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageListener;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +14,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import training.company.service.ApplicationContextWrapper;
+
 @Configuration
 public class RabbitConfiguration {
 
+	public static final String QUEUE = ".queue.test";
+
+	public static String	SETTINGS_FANOUT_EXCHANGE	= ".settings.fanout.exchange";
+
 	@Autowired
 	private Environment environment;
+
+	@Bean
+	public Queue erpQueue() {
+		return new Queue(getQueuesPrefix() + QUEUE);
+	}
+
+	public String getQueuesPrefix() {
+		return environment.getProperty("rabbitmq.queues.prefix");
+	}
 
 	@Bean
 	public ConnectionFactory connectionFactory() {
@@ -34,14 +47,20 @@ public class RabbitConfiguration {
 		return connectionFactory;
 	}
 
+	/**
+	 * Fanout exchange used to route messages to all of the queues that are bound to it
+	 *
+	 * @return
+	 */
+
 	@Bean
-	public AmqpAdmin amqpAdmin() {
-		return new RabbitAdmin(connectionFactory());
+	public FanoutExchange fanoutExchange() {
+		return new FanoutExchange(getQueuesPrefix() + SETTINGS_FANOUT_EXCHANGE);
 	}
 
 	@Bean
-	public Queue myQueue() {
-		return new Queue("deliatestqueue");
+	public AmqpAdmin amqpAdmin() {
+		return new RabbitAdmin(connectionFactory());
 	}
 
 	@Bean
@@ -56,23 +75,30 @@ public class RabbitConfiguration {
 		return new Jackson2JsonMessageConverter();
 	}
 
+	public static String getQueueName() {
+		RabbitConfiguration rabbitErpConfiguration = ApplicationContextWrapper.getBeanByClass(RabbitConfiguration.class);
+		return rabbitErpConfiguration.getQueuesPrefix() + ".supo.inv";
+	}
 
-/*    @Bean
-    public SimpleMessageListenerContainer messageListenerContainer() {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory());
-        container.setQueueNames("deliatestqueue");
-        container.setMessageListener(messageListener());
-        return container;
-    }*/
+	/*
+	 * Examle of a simple message listener that prints out any received message
+	 * and is implemented her From what I see though it should has it's own
+	 * service -> Companyconsumer
+	 */
 
-/*    @Bean
-    public MessageListener messageListener() {
-        return new MessageListener() {
-            public void onMessage(Message message) {
-                System.out.println("received: " + message);
-            }
-        };
-    }*/
+	/*
+	 * @Bean public SimpleMessageListenerContainer messageListenerContainer() {
+	 * SimpleMessageListenerContainer container = new
+	 * SimpleMessageListenerContainer();
+	 * container.setConnectionFactory(connectionFactory());
+	 * container.setQueueNames("deliatestqueue");
+	 * container.setMessageListener(messageListener()); return container; }
+	 */
+
+	/*
+	 * @Bean public MessageListener messageListener() { return new
+	 * MessageListener() { public void onMessage(Message message) {
+	 * System.out.println("received: " + message); } }; }
+	 */
 
 }

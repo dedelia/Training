@@ -26,7 +26,10 @@ public class CompanyService {
 			companies.add(new CompanyDto(tempCompany));
 			companyNotificationService.sendCompanyNotification(tempCompany);
 		}
-	//	companyNotificationService.sendSuPoNotification(companies);
+		// could also wend a whole list
+		// companyNotificationService.sendNotification(companies);
+
+
 		return companies;
 	}
 
