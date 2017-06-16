@@ -1,11 +1,16 @@
 package training.common.configuration;
 
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,27 +40,39 @@ public class RabbitConfiguration {
 	}
 
 	@Bean
-	public RabbitTemplate rabbitTemplate() {
-		return new RabbitTemplate(connectionFactory());
+	public Queue myQueue() {
+		return new Queue("deliatestqueue");
 	}
 
 	@Bean
-	public Queue myQueue() {
-		return new Queue("myqueue");
+	public RabbitTemplate rabbitTemplate() {
+		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
+		rabbitTemplate.setMessageConverter(messageConverter());
+		return rabbitTemplate;
 	}
 
-	/*
-	 * @Bean public AmqpAdmin amqpAdmin() { return new
-	 * RabbitAdmin(connectionFactory()); }
-	 *
-	 * @Bean public RabbitTemplate rabbitTemplate() { RabbitTemplate
-	 * rabbitTemplate = new RabbitTemplate(connectionFactory());
-	 * rabbitTemplate.setMessageConverter(messageConverter()); return
-	 * rabbitTemplate; }
-	 *
-	 * @Bean public MessageConverter messageConverter() { return new
-	 * Jackson2JsonMessageConverter(); }
-	 *
-	 * @Bean public Queue myQueue() { return new Queue("myqueue"); }
-	 */
+	@Bean
+	public MessageConverter messageConverter() {
+		return new Jackson2JsonMessageConverter();
+	}
+
+
+/*    @Bean
+    public SimpleMessageListenerContainer messageListenerContainer() {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory());
+        container.setQueueNames("deliatestqueue");
+        container.setMessageListener(messageListener());
+        return container;
+    }*/
+
+/*    @Bean
+    public MessageListener messageListener() {
+        return new MessageListener() {
+            public void onMessage(Message message) {
+                System.out.println("received: " + message);
+            }
+        };
+    }*/
+
 }

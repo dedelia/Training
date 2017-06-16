@@ -32,10 +32,6 @@ public class CompanyResource {
 
 	@GET
 	public List<CompanyDto> getCompanySet() {
-		List<CompanyDto> companyEntities = companyService.getAll();
-		if (!companyEntities.isEmpty()) {
-			companyNotificationService.sendSuPoNotification(companyEntities);
-		}
 		return companyService.getAll();
 	}
 

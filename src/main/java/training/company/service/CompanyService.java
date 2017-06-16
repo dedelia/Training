@@ -16,12 +16,17 @@ public class CompanyService {
 	@Autowired
 	private CompanyRepository companyRepository;
 
+	@Autowired
+	CompanyNotificationService companyNotificationService;
+
 	public List<CompanyDto> getAll() {
 
 		List<CompanyDto> companies = new ArrayList<CompanyDto>();
 		for (CompanyEntity tempCompany : companyRepository.findAllObjects()) {
 			companies.add(new CompanyDto(tempCompany));
+			companyNotificationService.sendCompanyNotification(tempCompany);
 		}
+	//	companyNotificationService.sendSuPoNotification(companies);
 		return companies;
 	}
 
