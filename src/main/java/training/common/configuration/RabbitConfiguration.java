@@ -1,6 +1,11 @@
 package training.common.configuration;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -21,7 +26,7 @@ public class RabbitConfiguration {
 
 	public static final String QUEUE = ".queue.test";
 
-	public static String	SETTINGS_FANOUT_EXCHANGE	= ".settings.fanout.exchange";
+	public static String SETTINGS_FANOUT_EXCHANGE = ".settings.fanout.exchange";
 
 	@Autowired
 	private Environment environment;
@@ -48,7 +53,8 @@ public class RabbitConfiguration {
 	}
 
 	/**
-	 * Fanout exchange used to route messages to all of the queues that are bound to it
+	 * Fanout exchange used to route messages to all of the queues that are
+	 * bound to it
 	 *
 	 * @return
 	 */
@@ -56,6 +62,16 @@ public class RabbitConfiguration {
 	@Bean
 	public FanoutExchange fanoutExchange() {
 		return new FanoutExchange(getQueuesPrefix() + SETTINGS_FANOUT_EXCHANGE);
+	}
+
+	@Bean(name = "genericQueue")
+	public Queue genericQueue() {
+		return new Queue(getQueuesPrefix() + "settings.generic");
+
+	}
+	@Bean
+	public List<Binding> bs() {
+		return Arrays.asList(BindingBuilder.bind(genericQueue()).to(fanoutExchange()));
 	}
 
 	@Bean
@@ -76,8 +92,9 @@ public class RabbitConfiguration {
 	}
 
 	public static String getQueueName() {
-		RabbitConfiguration rabbitErpConfiguration = ApplicationContextWrapper.getBeanByClass(RabbitConfiguration.class);
-		return rabbitErpConfiguration.getQueuesPrefix() + ".supo.inv";
+		RabbitConfiguration rabbitErpConfiguration = ApplicationContextWrapper
+				.getBeanByClass(RabbitConfiguration.class);
+		return rabbitErpConfiguration.getQueuesPrefix() + ".ceva";
 	}
 
 	/*

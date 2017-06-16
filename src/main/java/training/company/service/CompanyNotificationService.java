@@ -27,7 +27,6 @@ public class CompanyNotificationService {
 		for (CompanyDto c : companies) {
 			map.put("companyUUID", c.getUUID().toString());
 		}
-
 		rabbitTemplate.convertAndSend(RabbitConfiguration.getQueueName(), map);
 	}
 
@@ -37,7 +36,7 @@ public class CompanyNotificationService {
 		 */
 		Map<String, String> map = new HashMap<>();
 		map.put("entityUUID", companyEntity.getExternalUUIDWithoutDashes());
-		rabbitTemplate.convertAndSend("deliatestqueue", map);
+		rabbitTemplate.convertAndSend(RabbitConfiguration.getQueueName(), map);
 	}
 
 }

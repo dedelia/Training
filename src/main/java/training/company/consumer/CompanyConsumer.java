@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CompanyConsumer {
 
-	@RabbitListener(queues = "deliatestqueue")
+/*	@RabbitListener(queues = "deliatestqueue")
 	public void processCompany(Message message) {
 		System.out.println(message);
-	}
+	}*/
 }
